@@ -32,3 +32,13 @@
     }
   }
 }
+
+@layer components {
+  .int {
+    @apply mb-2 h-10 w-full  rounded-lg px-2 focus:outline-none focus:ring focus:ring-blue-400 focus:ring-offset-2 sm:w-80;
+  }
+}
+
+.active {
+  @apply text-blue-700;
+}

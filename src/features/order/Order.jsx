@@ -11,6 +11,7 @@ import {
 } from '../../utils/helpers';
 import { useEffect } from 'react';
 import UpdateOrder from './UpdateOrder';
+import { useSelector } from 'react-redux';
 
 function Order() {
   const order = useLoaderData();
@@ -33,6 +34,10 @@ function Order() {
     estimatedDelivery,
     cart,
   } = order;
+
+  const { address } = useSelector((state) => state.user);
+  console.log(address, 'user');
+  console.log(order, 'order');
 
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
 

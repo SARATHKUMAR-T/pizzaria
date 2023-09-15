@@ -8,6 +8,7 @@ import { clearCart, getCart, getTotalCartPrice } from '../cart/cartSlice';
 import store from '../../store';
 import { formatCurrency } from '../../utils/helpers';
 import { fetchAddress } from '../user/userSlice';
+import toast from 'react-hot-toast';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -149,7 +150,27 @@ export async function action({ request }) {
     priority: data.priority === 'true',
   };
 
-  console.log(order);
+  if (order) {
+    const req = await fetch(
+      'https://pizzaria-backend-cyan.vercel.app/api/addorder',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': localStorage.getItem('token') || '',
+        },
+        body: JSON.stringify(order),
+      }
+    );
+    const final = await req.json();
+
+    if (final.message === 'Your Order Is Taken!') {
+      toast.success('Your Order Is Taken!', {
+        duration: 4000,
+      });
+    }
+    console.log(final, 'from server');
+  }
 
   const errors = {};
   if (!isValidPhone(order.phone))

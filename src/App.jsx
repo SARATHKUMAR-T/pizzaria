@@ -11,6 +11,11 @@ import Order, { loader as orderLoader } from './features/order/Order';
 import { action as updateOrderAction } from './features/order/UpdateOrder';
 
 import AppLayout from './ui/AppLayout';
+import SignIn from './features/signIn/SignIn';
+import SignUp from './features/signUp/SignUp';
+import AuthLayout from './ui/AuthLayout';
+import { Toaster } from 'react-hot-toast';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const router = createBrowserRouter([
   {
@@ -43,10 +48,49 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    element: <AuthLayout />,
+    errorElement: <Error />,
+    children: [
+      {
+        path: '/signin',
+        element: <SignIn />,
+      },
+      {
+        path: '/signup',
+        element: <SignUp />,
+      },
+    ],
+  },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  const queryClient = new QueryClient();
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <Toaster
+        position="top-center"
+        gutter={12}
+        containerStyle={{ margin: '8px' }}
+        toastOptions={{
+          success: {
+            duration: 3000,
+          },
+          error: {
+            duration: 5000,
+          },
+          style: {
+            fontSize: '16px',
+            maxWidth: '500px',
+            padding: '16px 24px',
+            backgroundColor: '#fbbf24',
+            color: 'var(--color-grey-700)',
+          },
+        }}
+      />
+    </QueryClientProvider>
+  );
 }
 
 export default App;
